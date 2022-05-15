@@ -29,3 +29,17 @@ export const getMap = (coords) => {
   console.log(coords);
   mymap.setView(coords, 10);
 };
+export const getGeo = (position) => {
+  if (!mymap) {
+    mymap = L.map("mapdiv");
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(mymap);
+    // declaring marker icon only once
+    marker = L.marker(position, { icon: Pin }).addTo(mymap);
+  }
+  marker.setLatLng(position);
+  console.log(position);
+  mymap.setView(position, 10);
+};

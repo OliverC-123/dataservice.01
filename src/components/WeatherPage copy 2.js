@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Loading from "./helpers/Loading";
 import { getWeather, getWeatherLatLon } from "./helpers/Weatherapi";
 import { getPostal } from "./helpers/Autocompleteapi";
-import { getMap } from "./helpers/Leafletapi";
+import { getMap, getGeo } from "./helpers/Leafletapi";
 const WeatherPage2 = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -30,7 +30,7 @@ const WeatherPage2 = () => {
         setMap(data);
         setError(false);
         setLoading(false);
-        // getMap([position.coords.coord.lat, position.coords.coord.lon])
+        getGeo([position.coords.latitude, position.coords.longitude])
       } else {
         console.log("Error");
         setError(true);
