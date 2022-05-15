@@ -1,0 +1,134 @@
+/* SCSS HEX */
+$black: #000001ff;
+$rich-black-fogra-29: #030b15ff;
+$oxford-blue: #0c1e31ff;
+$charcoal: rgb(59, 68, 83);
+$misty-rose: #f1dedeff;
+$maximum-yellow: #f2ff49ff;
+// FONT
+body {
+  background-color: rgb(142, 248, 191);
+  #container {
+    max-width: 1040px;
+    margin: auto;
+  }
+}
+#navigation {
+  margin: 0;
+  padding: 0;
+  border-bottom: 2px solid $charcoal;
+  color: $rich-black-fogra-29;
+
+  ul {
+    width: 100%;
+    margin: 0;
+    padding: 1em 0 1em 0;
+    list-style: none;
+    text-align: center;
+    li {
+      margin-top: 4%;
+      display: inline-block;
+      font-family: "Merriweather", serif;
+      font-size: 1.6em;
+      list-style-type: none;
+      border-right: 1px solid $rich-black-fogra-29;
+      &:last-child {
+        border: none;
+      }
+      a {
+        margin-right: 10px;
+        margin-left: 10px;
+        display: grid;
+        grid-template-columns: auto;
+        color: $rich-black-fogra-29;
+        text-align: center;
+        text-decoration: none;
+        &:hover {
+          transition: 400ms;
+          background-color: $charcoal;
+          color: $maximum-yellow;
+        }
+      }
+    }
+  }
+}
+.subContainer {
+  text-align: center;
+  margin-top: 45px;
+}
+.newButton {
+  background-color: $charcoal;
+  color: $misty-rose;
+  text-decoration: none;
+  border: none;
+  font-size: 22px;
+  border-radius: 50%;
+  padding: 15px 32px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.Capitalize {
+  text-transform: capitalize;
+}
+#searchContainer {
+  margin: auto;
+  text-align: center;
+  #Parameters {
+    margin-right: 20px;
+    background-color: gray;
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+    border-radius: 5%;
+    max-height: 40px;
+  }
+  #Languages {
+    margin-right: 20px;
+    background-color: gray;
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+    border-radius: 5%;
+  }
+  #searchInput {
+    background-color: gray;
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+    &::placeholder {
+      color: white;
+    }
+  }
+  #searchButton {
+    margin-left: 20px;
+    background-color: gray;
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+  }
+}
+#News {
+  background-color: aliceblue;
+  text-align: left;
+  h1 {
+    text-align: center;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.5em;
+  }
+  img {
+    margin-left: 10px;
+    max-height: 400px;
+    max-width: 600px;
+  }
+  p {
+    margin: auto;
+    max-width: 600px;
+    margin-left: 15px;
+    font-size: 0.7em;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  h3 {
+    margin-right: 40px;
+    text-align: right;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.8em;
+  }
+}
