@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 
 import Loading from "./helpers/Loading";
 import { getWeather, getWeatherLatLon } from "./helpers/Weatherapi";
-import { getPostal } from "./helpers/Autocompleteapi";
-import { getMap, getGeo, delMap } from "./helpers/Leafletapi";
-const WeatherPage2 = () => {
+import { getGeo, delMap } from "./helpers/Leafletapi";
+const WeatherPage3 = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [update, setUpdate] = useState(true);
@@ -12,9 +11,8 @@ const WeatherPage2 = () => {
   // chosen zip
   const [map, setMap] = useState();
   const [weather, setWeather] = useState();
-  const [zip, setZip] = useState();
+  const [mapdata, setMapData] = useState({ lat: 56, lng: 10 });
   // list of zip
-  const [dawapostnr, setDawapostnr] = useState();
   // functions for getGeo
   function GetLocation() {
     if (navigator.geolocation) {
@@ -44,7 +42,6 @@ const WeatherPage2 = () => {
       delMap();
     };
   }, []);
-
   const isInitialMount = useRef(true);
 
   // function to translate sunrise/sunset
@@ -64,26 +61,12 @@ const WeatherPage2 = () => {
     (async () => {
       setLoading(true);
       try {
-        if (zip.length !== 4 || isNaN(zip)) {
-          // user is searching for city/zip
-          // gets DAWA data - sends zip code/city name
-          let dawaData = await getPostal(zip);
-          setDawapostnr(dawaData);
-          setError();
-        } else {
-          // user chosen city/zip
-          let weatherData = await getWeather(zip);
-          setWeather(weatherData);
-          setError();
-          getMap(
-            [weatherData.coord.lat, weatherData.coord.lon],
-            weatherData.weather[0].description
-          );
-        }
+        let weatherData = await getWeatherLatLon(mapdata.lat, mapdata.lng);
+        setWeather(weatherData);
+        setError();
       } catch (err) {
         console.log(err);
         setError(true);
-        setDawapostnr();
         setWeather();
       } finally {
         setLoading(false);
@@ -93,49 +76,34 @@ const WeatherPage2 = () => {
     return () => {
       delMap();
     };
-  }, [update, zip]);
+  }, [update, mapdata]);
 
   return (
     <section id="Page" className="">
       <div>
-        <input
-          list="zips"
-          onChange={(e) => setZip(e.target.value.substring(0, 4))}
-          type="text"
-          placeholder="Input Zip"
-          autoComplete="off"
-        />
-        <datalist id="zips">
-          {dawapostnr &&
-            dawapostnr.map((p) => (
-              <option value={p.tekst} key={p.postnummer.nr} />
-            ))}
-        </datalist>
-        <div>
-          <h1>Very weather with a map</h1>
-        </div>
-        {weather && (
-          <div>
-            <h2>Land : &nbsp;{weather.sys.country}</h2>
-            <h2>By : &nbsp;{weather.name}</h2>
-            <h1>Temp &nbsp;{Math.round(weather.main.temp)}&deg;C</h1>
-            <p>
-              Sunrise - &nbsp;
-              {timeTranslate(weather.sys.sunrise)}
-              &nbsp;Sunset - &nbsp;
-              {timeTranslate(weather.sys.sunset)}
-            </p>
-          </div>
-        )}
-        {loading && <Loading />}
-        {/* {error && <Error/>} */}
-        <div
-          id="mapdiv"
-          style={{ height: 400, width: "auto", backgroundColor: "silver" }}
-        ></div>
+        <h1>Very weather with a map</h1>
       </div>
+      {weather && (
+        <div>
+          <h2>Land : &nbsp;{weather.sys.country}</h2>
+          <h2>By : &nbsp;{weather.name}</h2>
+          <h1>Temp &nbsp;{Math.round(weather.main.temp)}&deg;C</h1>
+          <p>
+            Sunrise - &nbsp;
+            {timeTranslate(weather.sys.sunrise)}
+            &nbsp;Sunset - &nbsp;
+            {timeTranslate(weather.sys.sunset)}
+          </p>
+        </div>
+      )}
+      {loading && <Loading />}
+      {/* {error && <Error/>} */}
+      <div
+        id="mapdiv"
+        style={{ height: 400, width: "auto", backgroundColor: "silver" }}
+      ></div>
     </section>
   );
 };
 
-export default WeatherPage2;
+export default WeatherPage3;

@@ -13,6 +13,7 @@ import SWPage from "./components/SWPage";
 import WeatherPage from "./components/WeatherPage";
 import WeatherPage1 from "./components/WeatherPage copy";
 import WeatherPage2 from "./components/WeatherPage copy 2";
+import WeatherPage3 from "./components/WeatherPage copy 3";
 function App() {
   return (
     <Fragment>
@@ -30,7 +31,7 @@ function App() {
             <Route path="/WeatherPage" element={<WeatherPage />} />
             <Route path="/WeatherPage1" element={<WeatherPage1 />} />
             <Route path="/WeatherPage2" element={<WeatherPage2 />} />
-
+            <Route path="/WeatherPage3" element={<WeatherPage3 />} />
           </Routes>
         </section>
       </Router>

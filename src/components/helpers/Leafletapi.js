@@ -14,9 +14,12 @@ let Pin = L.icon({
 });
 let mymap, marker;
 
+var popup = L.popup();
+
 // must receive parameters as an array
-export const getMap = (coords) => {
-  if (!mymap) {
+export const getMap = (coords, weather) => {
+  console.log("1", mymap);
+  if (!mymap || mymap == null) {
     mymap = L.map("mapdiv");
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
@@ -24,13 +27,21 @@ export const getMap = (coords) => {
     }).addTo(mymap);
     // declaring marker icon only once
     marker = L.marker(coords, { icon: Pin }).addTo(mymap);
+    // mymap.on("click", onMapClick);
+    mymap.on("click", (e) => {
+      console.log(e);
+    });
   }
-  marker.setLatLng(coords);
-  console.log(coords);
+
+  marker.setLatLng(coords).bindPopup(weather);
   mymap.setView(coords, 10);
+
+  // close map function
 };
-export const getGeo = (position) => {
-  if (!mymap) {
+
+export const getGeo = (position, weather) => {
+  console.log("2", mymap);
+  if (!mymap || mymap == null) {
     mymap = L.map("mapdiv");
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
@@ -38,8 +49,18 @@ export const getGeo = (position) => {
     }).addTo(mymap);
     // declaring marker icon only once
     marker = L.marker(position, { icon: Pin }).addTo(mymap);
+
   }
-  marker.setLatLng(position);
-  console.log(position);
-  mymap.setView(position, 10);
+
+  marker.setLatLng(position).bindPopup(weather);
+  mymap.setView(position, 13);
 };
+
+export const delMap = () => {
+  if (mymap) {
+    mymap.off();
+    mymap = null;
+  }
+};
+
+
