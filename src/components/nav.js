@@ -39,6 +39,9 @@ function Nav() {
             <li>
               <Link to="/WeatherPage3">Weather+++</Link>
             </li>
+            <li>
+              <Link to="/ShoppingListPage">Airtable</Link>
+            </li>
           </ul>
         </nav>
       </section>

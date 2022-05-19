@@ -16,7 +16,7 @@ const WeatherPage3 = () => {
   function timeTranslate(time) {
     return new Date(time * 1000).toLocaleTimeString(
       [],
-      ("da-DK", { hour: "2-digit", minute: "2-digit" })
+      ( { hour: "2-digit", minute: "2-digit" })
     );
   }
   useEffect(() => {

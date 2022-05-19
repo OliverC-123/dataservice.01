@@ -14,6 +14,7 @@ import WeatherPage from "./components/WeatherPage";
 import WeatherPage1 from "./components/WeatherPage copy";
 import WeatherPage2 from "./components/WeatherPage copy 2";
 import WeatherPage3 from "./components/WeatherPage copy 3";
+import ShoppingListPage from "./components/ShoppingListPage";
 function App() {
   return (
     <Fragment>
@@ -32,6 +33,7 @@ function App() {
             <Route path="/WeatherPage1" element={<WeatherPage1 />} />
             <Route path="/WeatherPage2" element={<WeatherPage2 />} />
             <Route path="/WeatherPage3" element={<WeatherPage3 />} />
+            <Route path="/ShoppingListPage" element={<ShoppingListPage />} />
           </Routes>
         </section>
       </Router>
