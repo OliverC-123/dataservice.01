@@ -62,3 +62,22 @@ export const delGrocery = (itemID) => {
     });
   return response;
 };
+export const patchGrocery = (editItems, itemID) => {
+  let endpoint = "Shopping/";
+
+  let response = axios
+    .patch(api.baseUrl + endpoint + itemID, editItems, {
+      headers: {
+        Authorization: "Bearer " + api.key,
+        "Content-type": "application/json",
+      },
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((error) => {
+      console.log("Error", error);
+      throw new Error("Sorry, an error has occourred");
+    });
+  return response;
+};

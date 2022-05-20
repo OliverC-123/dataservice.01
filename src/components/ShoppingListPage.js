@@ -1,20 +1,39 @@
 import React, { useState, useEffect } from "react";
-import errorHandle from "./helpers/errorHandle";
 import Loading from "./helpers/Loading";
 import "../indkoeb.scss";
-import { getGrocery, postGrocery, delGrocery } from "./helpers/Airtableapi";
+
+import {
+  AiOutlineDelete,
+  AiOutlineEdit,
+  AiFillPlusCircle,
+} from "react-icons/ai";
+import {
+  getGrocery,
+  postGrocery,
+  delGrocery,
+  patchGrocery,
+} from "./helpers/Airtableapi";
+
 const ShoppingListPage = () => {
   // useStates
   const [items, setItems] = useState();
   const [loading, setLoading] = useState();
   const [error, setError] = useState();
+
   // useState to update useEffect
   const [update, setUpdate] = useState(false);
+
   // useState to post item
   const [post, setPost] = useState();
+
+  // useState for edit
+  const [edit, setEdit] = useState();
+
+  // useState for add item
+  const [add, setAdd] = useState();
   // useEffect
   useEffect(() => {
-    setItems();
+    // setItems();
     setLoading(true);
 
     getGrocery()
@@ -54,6 +73,8 @@ const ShoppingListPage = () => {
         console.log(data);
         setError();
         setUpdate(!update);
+        e.target.reset(); //empty input area
+        setItems(); // empty state to not post multiple times
       })
       .catch((err) => {
         console.log("Error", err);
@@ -65,28 +86,102 @@ const ShoppingListPage = () => {
         e.target.reset();
       });
   };
+  // handleDelete deletes items from AirTable list
   const handleDelete = (ID) => {
-    console.log(ID)
-    // delGrocery(ID);
-    // .then((data) => {
-    //   console.log(data);
-    // })
-    // .catch((err) => {
-    //   console.log("Error", err), setError(true);
-    // })
-    // .finally(setLoading(false));
+    // window.confirm("") to confirm deleting an item
+    if (window.confirm("Do you wish to permanently delete this?") === true) {
+      console.log(ID);
+      setLoading(true);
+      delGrocery(ID)
+        .then((data) => {
+          console.log(data);
+          setError();
+          setUpdate(!update);
+        })
+        .catch((err) => {
+          console.log("Error", err);
+          setError(true);
+        })
+        .finally(setLoading(false));
+    }
   };
+  // handleEdit patches items from AirTable list
+
+  const handleEdit = (e) => {
+    // prevents site from default reloading on submit
+    e.preventDefault();
+    setLoading(true);
+
+    // edits an item to shopping list
+
+    const editItem = {
+      fields: {
+        vare: post,
+      },
+    };
+
+    // call PATCH to api
+    patchGrocery(editItem, edit.id)
+      .then((data) => {
+        console.log(data);
+        setError();
+        setUpdate(!update);
+        e.target.reset(); //empty input area
+        setItems(); // empty state to not post multiple times
+        setEdit(); // empty state to edit
+      })
+      .catch((err) => {
+        console.log("Error", err);
+        setError(true);
+      })
+      .finally(() => {
+        setLoading(false);
+        // clears input submit
+        e.target.reset();
+      });
+  };
+
   return (
     <div className="notecontainer">
-      <h1>Shopping List</h1>
-
-      <form onSubmit={handlePost} className="note">
-        <label>
-          Add item
-          <input type="text" onChange={(e) => setPost(e.target.value)} />
-        </label>
-        <input type="submit" value="Add to list" />
-      </form>
+      <h1>
+        Shopping List &emsp;&emsp;&emsp;&emsp; Add item
+        <AiFillPlusCircle onClick={() => setAdd(items.records)} />
+      </h1>
+      {/* form to add */}
+      {add && (
+        <form onSubmit={handlePost} className="note">
+          <label>
+            <input type="text" onChange={(e) => setPost(e.target.value)} />
+          </label>
+          <input type="submit" value="Add to list" />
+        </form>
+      )}
+      {/* form to edit */}
+      {edit && (
+        <form onSubmit={handleEdit} className="note">
+          <label>
+            Edit item
+            <input
+              // key to reset input field
+              key={edit.fields.vare}
+              type="text"
+              id="edit"
+              defaultValue={edit.fields.vare}
+              onChange={(e) => setPost(e.target.value)}
+            />
+          </label>
+          <input type="submit" value="Edit item" />
+          <button
+            type="button"
+            onClick={() => {
+              setPost();
+              setEdit();
+            }}
+          >
+            Regret
+          </button>
+        </form>
+      )}
 
       {items &&
         items.records
@@ -96,6 +191,15 @@ const ShoppingListPage = () => {
               <h2>{v.fields.vare}</h2>
               <p>{new Date(v.createdTime).toLocaleString()}</p>
               <div onClick={() => handleDelete(v.id)}>Delete</div>
+              <div className="retslet">
+                <AiOutlineDelete onClick={() => handleDelete(v.id)} />
+                <AiOutlineEdit
+                  onClick={() => {
+                    setEdit(v);
+                    window.scrollTo({ top: 200, behavior: "smooth" });
+                  }}
+                />
+              </div>
             </div>
           ))}
       {loading && <Loading />}
