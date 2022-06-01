@@ -44,7 +44,7 @@ const QuotePage = () => {
         {quote && (
           <div>
             <h2>&#10077;{quote.content}&#10078;</h2>
-            <h3>{quote.originator.name}</h3>{" "}
+            <h3>{quote.originator.name}</h3>
           </div>
         )}
         {loading && <Loading />}

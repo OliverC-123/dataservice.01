@@ -190,7 +190,7 @@ const ShoppingListPage = () => {
             <div key={v.id} className="note">
               <h2>{v.fields.vare}</h2>
               <p>{new Date(v.createdTime).toLocaleString()}</p>
-              <div onClick={() => handleDelete(v.id)}>Delete</div>
+              {/* <div onClick={() => handleDelete(v.id)}>Delete</div> */}
               <div className="retslet">
                 <AiOutlineDelete onClick={() => handleDelete(v.id)} />
                 <AiOutlineEdit
